@@ -707,67 +707,69 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'January, 23 2021',
-                  style: TextStyle(
-                    color: MyColors.greyText,
-                    fontSize: 12,
-                  ),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'January, 23 2021',
+                style: TextStyle(
+                  color: MyColors.lightGrey,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
                 ),
-                SizedBox(height: 2),
-                Text(
-                  'Today',
-                  style: TextStyle(
-                    color: MyColors.darkBlue,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700,
-                  ),
+              ),
+              SizedBox(height: 1),
+              Text(
+                'Today',
+                style: TextStyle(
+                  color: MyColors.darkBlue,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  height: 1.05,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+          const Spacer(),
           whiteChip(
             child: const Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   'TIMELINE',
                   style: TextStyle(
                     color: MyColors.darkBlue,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.4,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.3,
                   ),
                 ),
-                SizedBox(width: 4),
                 Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 16,
+                  Icons.arrow_drop_down,
+                  size: 18,
                   color: MyColors.darkBlue,
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           whiteChip(
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SvgPicture.asset(
                   'assets/icons/icon_calendar.svg',
-                  width: 12,
-                  height: 13,
+                  width: 11,
+                  height: 12,
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: 5),
                 const Text(
                   'JAN, 2021',
                   style: TextStyle(
                     color: MyColors.darkBlue,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.3,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.2,
                   ),
                 ),
               ],
@@ -780,7 +782,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget daysRow() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(weekList.length, (index) {
@@ -792,7 +794,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   weekList[index]['day'] as String,
                   style: TextStyle(
-                    color: selected ? MyColors.selectedGreen : MyColors.greyText,
+                    color: selected
+                        ? MyColors.selectedGreen
+                        : MyColors.lightGrey,
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                   ),
@@ -801,9 +805,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   weekList[index]['date'] as String,
                   style: TextStyle(
-                    color: selected ? MyColors.selectedGreen : MyColors.greyText,
-                    fontSize: 16,
-                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                    color: selected
+                        ? MyColors.selectedGreen
+                        : MyColors.darkBlue,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -811,7 +817,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 5,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: selected ? MyColors.selectedGreen : Colors.transparent,
+                    color: selected
+                        ? MyColors.selectedGreen
+                        : Colors.transparent,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -1029,7 +1037,13 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: softShadow(),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.10),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: child,
     );
