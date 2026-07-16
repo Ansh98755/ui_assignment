@@ -2,14 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'color_constants.dart';
 
-void main() {
-  runHomeApp();
-}
-
-void runHomeApp() {
-  runApp(const MyApp());
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -20,11 +12,8 @@ class MyApp extends StatelessWidget {
       title: 'UI Assignment',
       theme: ThemeData(
         fontFamily: 'Roboto',
-        scaffoldBackgroundColor: AppColors.background,
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.navy),
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: AppColors.fontColor),
-        ),
+        scaffoldBackgroundColor: MyColors.bg,
+        primaryColor: MyColors.darkBlue,
       ),
       home: const HomeScreen(),
     );
@@ -39,11 +28,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _carouselIndex = 0;
-  int _selectedDateIndex = 3;
-  int _navIndex = 0;
+  int currentPage = 0;
+  int selectedDay = 3;
+  int currentTab = 0;
 
-  final List<Map<String, dynamic>> _dates = [
+  final List<Map<String, dynamic>> weekList = [
     {'day': 'MON', 'date': '20'},
     {'day': 'TUE', 'date': '21'},
     {'day': 'WED', 'date': '22'},
@@ -56,21 +45,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      backgroundColor: AppColors.background,
+      backgroundColor: MyColors.bg,
+      // center fab
       floatingActionButton: SizedBox(
         width: 56,
         height: 56,
         child: FloatingActionButton(
           onPressed: () {},
-          backgroundColor: AppColors.navy,
+          backgroundColor: MyColors.darkBlue,
           elevation: 4,
           shape: const CircleBorder(),
           child: const Icon(Icons.add, color: Colors.white, size: 28),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomNav(),
+      bottomNavigationBar: bottomBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 24),
@@ -78,19 +67,19 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              _buildTopBar(),
+              topBar(),
               const SizedBox(height: 18),
-              _buildWelcomeRow(),
+              welcomeSection(),
               const SizedBox(height: 18),
-              _buildCarousel(),
+              bannerPager(),
               const SizedBox(height: 12),
-              _buildPageIndicator(),
+              pageDots(),
               const SizedBox(height: 18),
-              _buildTimelineHeader(),
+              todayHeader(),
               const SizedBox(height: 16),
-              _buildDateStrip(),
+              daysRow(),
               const SizedBox(height: 18),
-              _buildActivityCard(),
+              newOrderCard(),
             ],
           ),
         ),
@@ -98,12 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildTopBar() {
+  Widget topBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          _circleIconButton(
+          circleBtn(
             child: SvgPicture.asset(
               'assets/icons/icon_menu.svg',
               width: 14,
@@ -111,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const Spacer(),
-          _circleIconButton(
+          circleBtn(
             child: SvgPicture.asset(
               'assets/icons/icon_heart.svg',
               width: 18,
@@ -122,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Stack(
             clipBehavior: Clip.none,
             children: [
-              _circleIconButton(
+              circleBtn(
                 child: SvgPicture.asset(
                   'assets/icons/icon_bell.svg',
                   width: 16,
@@ -136,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 16,
                   height: 16,
                   decoration: const BoxDecoration(
-                    color: AppColors.orange,
+                    color: MyColors.accentOrange,
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
@@ -158,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 40,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              boxShadow: _softShadow(),
+              boxShadow: softShadow(),
               border: Border.all(color: Colors.white, width: 2),
               image: const DecorationImage(
                 image: AssetImage('assets/images/profile_main.jpg'),
@@ -171,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildWelcomeRow() {
+  Widget welcomeSection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -183,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Welcome, Mypcot !!',
                   style: TextStyle(
-                    color: AppColors.navy,
+                    color: MyColors.darkBlue,
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
                   ),
@@ -192,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'here is your dashboard....',
                   style: TextStyle(
-                    color: AppColors.subtitle,
+                    color: MyColors.greyText,
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                   ),
@@ -206,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
-              boxShadow: _softShadow(),
+              boxShadow: softShadow(),
             ),
             alignment: Alignment.center,
             child: SvgPicture.asset(
@@ -220,32 +209,32 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildCarousel() {
+  Widget bannerPager() {
     return SizedBox(
       height: 200,
       child: PageView(
-        onPageChanged: (index) => setState(() => _carouselIndex = index),
+        onPageChanged: (index) => setState(() => currentPage = index),
         children: [
-          _ordersCard(),
-          _subscriptionsCard(),
-          _customersCard(),
+          ordersBanner(),
+          subscriptionBanner(),
+          customersBanner(),
         ],
       ),
     );
   }
 
-  Widget _buildPageIndicator() {
+  Widget pageDots() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(3, (index) {
-        final selected = _carouselIndex == index;
+        final selected = currentPage == index;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           margin: const EdgeInsets.symmetric(horizontal: 3),
           width: selected ? 16 : 6,
           height: 6,
           decoration: BoxDecoration(
-            color: selected ? AppColors.navy : AppColors.subtitle,
+            color: selected ? MyColors.darkBlue : MyColors.greyText,
             borderRadius: BorderRadius.circular(4),
           ),
         );
@@ -253,12 +242,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _ordersCard() {
+  Widget ordersBanner() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.cyanBlue,
+          color: MyColors.bannerBlue,
           borderRadius: BorderRadius.circular(22),
         ),
         child: Stack(
@@ -276,13 +265,13 @@ class _HomeScreenState extends State<HomeScreen> {
             Positioned(
               left: 16,
               bottom: 14,
-              child: _pillButton('Orders', AppColors.orange),
+              child: filledBtn('Orders', MyColors.accentOrange),
             ),
             Positioned(
               right: 10,
               top: 14,
-              child: _statChip(
-                color: AppColors.orange,
+              child: infoBox(
+                color: MyColors.accentOrange,
                 textColor: Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _avatarStack(
+                    profileStack(
                       [
                         'assets/images/person1.jpg',
                         'assets/images/person2.jpg',
@@ -320,16 +309,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Positioned(
               right: 10,
               bottom: 12,
-              child: _statChip(
+              child: infoBox(
                 color: Colors.white,
-                textColor: AppColors.navy,
+                textColor: MyColors.darkBlue,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RichText(
                       text: const TextSpan(
                         style: TextStyle(
-                          color: AppColors.navy,
+                          color: MyColors.darkBlue,
                           fontSize: 13,
                         ),
                         children: [
@@ -345,12 +334,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _avatarStack(
+                    profileStack(
                       [
                         'assets/images/person4.jpg',
                         'assets/images/person5.jpg',
                       ],
-                      borderColor: AppColors.cyanBlue,
+                      borderColor: MyColors.bannerBlue,
                       size: 24,
                     ),
                   ],
@@ -363,12 +352,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _subscriptionsCard() {
+  Widget subscriptionBanner() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.gold,
+          color: MyColors.bannerYellow,
           borderRadius: BorderRadius.circular(22),
         ),
         child: Stack(
@@ -386,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Positioned(
               left: 16,
               bottom: 14,
-              child: _pillButton('Subscriptions', AppColors.royalBlue),
+              child: filledBtn('Subscriptions', MyColors.deepBlue),
             ),
             Positioned(
               right: 10,
@@ -397,8 +386,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      _statChip(
-                        color: AppColors.royalBlue,
+                      infoBox(
+                        color: MyColors.deepBlue,
                         textColor: Colors.white,
                         child: RichText(
                           text: const TextSpan(
@@ -419,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Positioned(
                         left: 10,
                         bottom: -12,
-                        child: _avatarStack(
+                        child: profileStack(
                           [
                             'assets/images/person1.jpg',
                             'assets/images/person2.jpg',
@@ -432,20 +421,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 18),
-                  _statChip(
+                  infoBox(
                     color: Colors.white,
-                    textColor: AppColors.navy,
+                    textColor: MyColors.darkBlue,
                     child: RichText(
                       text: const TextSpan(
                         style: TextStyle(
-                          color: AppColors.iconGrey,
+                          color: MyColors.lightGrey,
                           fontSize: 13,
                         ),
                         children: [
                           TextSpan(
                             text: '10',
                             style: TextStyle(
-                              color: AppColors.navy,
+                              color: MyColors.darkBlue,
                               fontWeight: FontWeight.w700,
                               fontSize: 16,
                             ),
@@ -456,20 +445,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  _statChip(
+                  infoBox(
                     color: Colors.white,
-                    textColor: AppColors.navy,
+                    textColor: MyColors.darkBlue,
                     child: RichText(
                       text: const TextSpan(
                         style: TextStyle(
-                          color: AppColors.iconGrey,
+                          color: MyColors.lightGrey,
                           fontSize: 13,
                         ),
                         children: [
                           TextSpan(
                             text: '119',
                             style: TextStyle(
-                              color: AppColors.navy,
+                              color: MyColors.darkBlue,
                               fontWeight: FontWeight.w700,
                               fontSize: 16,
                             ),
@@ -488,12 +477,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _customersCard() {
+  Widget customersBanner() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.brightGreen,
+          color: MyColors.bannerGreen,
           borderRadius: BorderRadius.circular(22),
         ),
         child: Stack(
@@ -511,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Positioned(
               left: 14,
               bottom: 14,
-              child: _pillButton('View Customers', AppColors.magenta),
+              child: filledBtn('View Customers', MyColors.pink),
             ),
             Positioned(
               right: 10,
@@ -522,8 +511,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      _statChip(
-                        color: AppColors.magenta,
+                      infoBox(
+                        color: MyColors.pink,
                         textColor: Colors.white,
                         child: RichText(
                           text: const TextSpan(
@@ -546,13 +535,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         bottom: -14,
                         child: Row(
                           children: [
-                            _avatarStack(
+                            profileStack(
                               [
                                 'assets/images/person3.jpg',
                                 'assets/images/person1.jpg',
                                 'assets/images/person2.jpg',
                               ],
-                              borderColor: AppColors.brightGreen,
+                              borderColor: MyColors.bannerGreen,
                               size: 22,
                             ),
                             const SizedBox(width: 4),
@@ -566,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: const Icon(
                                 Icons.add,
                                 size: 14,
-                                color: AppColors.iconGrey,
+                                color: MyColors.lightGrey,
                               ),
                             ),
                           ],
@@ -575,9 +564,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  _statChip(
+                  infoBox(
                     color: Colors.white,
-                    textColor: AppColors.navy,
+                    textColor: MyColors.darkBlue,
                     width: 136,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -587,7 +576,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               '1.8%',
                               style: TextStyle(
-                                color: AppColors.navy,
+                                color: MyColors.darkBlue,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -596,7 +585,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Icon(
                               Icons.arrow_upward,
                               size: 16,
-                              color: AppColors.brightGreen,
+                              color: MyColors.bannerGreen,
                             ),
                           ],
                         ),
@@ -604,29 +593,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 26,
                           width: 100,
-                          child: CustomPaint(painter: _SparklinePainter()),
+                          child: CustomPaint(painter: GraphPainter()),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 8),
-                  _statChip(
+                  infoBox(
                     color: Colors.white,
-                    textColor: AppColors.navy,
+                    textColor: MyColors.darkBlue,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         RichText(
                           text: const TextSpan(
                             style: TextStyle(
-                              color: AppColors.iconGrey,
+                              color: MyColors.lightGrey,
                               fontSize: 13,
                             ),
                             children: [
                               TextSpan(
                                 text: '10',
                                 style: TextStyle(
-                                  color: AppColors.navy,
+                                  color: MyColors.darkBlue,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16,
                                 ),
@@ -636,13 +625,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        _avatarStack(
+                        profileStack(
                           [
                             'assets/images/person4.jpg',
                             'assets/images/person5.jpg',
                             'assets/images/person1.jpg',
                           ],
-                          borderColor: AppColors.brightGreen,
+                          borderColor: MyColors.bannerGreen,
                           size: 20,
                         ),
                       ],
@@ -657,7 +646,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildTimelineHeader() {
+  Widget todayHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -670,7 +659,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'January, 23 2021',
                   style: TextStyle(
-                    color: AppColors.subtitle,
+                    color: MyColors.greyText,
                     fontSize: 12,
                   ),
                 ),
@@ -678,7 +667,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Today',
                   style: TextStyle(
-                    color: AppColors.navy,
+                    color: MyColors.darkBlue,
                     fontSize: 26,
                     fontWeight: FontWeight.w700,
                   ),
@@ -686,13 +675,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          _outlineChip(
+          whiteChip(
             child: const Row(
               children: [
                 Text(
                   'TIMELINE',
                   style: TextStyle(
-                    color: AppColors.navy,
+                    color: MyColors.darkBlue,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.4,
@@ -702,13 +691,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icon(
                   Icons.keyboard_arrow_down,
                   size: 16,
-                  color: AppColors.navy,
+                  color: MyColors.darkBlue,
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
-          _outlineChip(
+          whiteChip(
             child: Row(
               children: [
                 SvgPicture.asset(
@@ -720,7 +709,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Text(
                   'JAN, 2021',
                   style: TextStyle(
-                    color: AppColors.navy,
+                    color: MyColors.darkBlue,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.3,
@@ -734,30 +723,30 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildDateStrip() {
+  Widget daysRow() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(_dates.length, (index) {
-          final selected = index == _selectedDateIndex;
+        children: List.generate(weekList.length, (index) {
+          final selected = index == selectedDay;
           return GestureDetector(
-            onTap: () => setState(() => _selectedDateIndex = index),
+            onTap: () => setState(() => selectedDay = index),
             child: Column(
               children: [
                 Text(
-                  _dates[index]['day'] as String,
+                  weekList[index]['day'] as String,
                   style: TextStyle(
-                    color: selected ? AppColors.darkTeal : AppColors.subtitle,
+                    color: selected ? MyColors.selectedGreen : MyColors.greyText,
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  _dates[index]['date'] as String,
+                  weekList[index]['date'] as String,
                   style: TextStyle(
-                    color: selected ? AppColors.darkTeal : AppColors.subtitle,
+                    color: selected ? MyColors.selectedGreen : MyColors.greyText,
                     fontSize: 16,
                     fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                   ),
@@ -767,7 +756,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 5,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: selected ? AppColors.darkTeal : Colors.transparent,
+                    color: selected ? MyColors.selectedGreen : Colors.transparent,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -779,7 +768,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildActivityCard() {
+  Widget newOrderCard() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -787,7 +776,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
-          boxShadow: _softShadow(),
+          boxShadow: softShadow(),
         ),
         child: Row(
           children: [
@@ -798,7 +787,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const Text(
                     'New order created',
                     style: TextStyle(
-                      color: AppColors.navy,
+                      color: MyColors.darkBlue,
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                     ),
@@ -807,7 +796,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const Text(
                     'New Order created with Order',
                     style: TextStyle(
-                      color: AppColors.subtitle,
+                      color: MyColors.greyText,
                       fontSize: 12,
                     ),
                   ),
@@ -815,7 +804,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const Text(
                     '09:00 AM',
                     style: TextStyle(
-                      color: AppColors.orange,
+                      color: MyColors.accentOrange,
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
@@ -824,7 +813,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icon(
                     Icons.arrow_forward,
                     size: 16,
-                    color: AppColors.orange.withValues(alpha: 0.85),
+                    color: MyColors.accentOrange.withValues(alpha: 0.85),
                   ),
                 ],
               ),
@@ -833,7 +822,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 64,
               height: 64,
               decoration: const BoxDecoration(
-                color: AppColors.orange,
+                color: MyColors.accentOrange,
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
@@ -849,7 +838,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBottomNav() {
+  Widget bottomBar() {
     return BottomAppBar(
       color: Colors.white,
       elevation: 8,
@@ -860,14 +849,14 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           children: [
             Expanded(
-              child: _navItem(
+              child: bottomItem(
                 0,
                 'assets/icons/nav_home.svg',
                 'Home',
               ),
             ),
             Expanded(
-              child: _navItem(
+              child: bottomItem(
                 1,
                 'assets/icons/nav_customers.svg',
                 'Customers',
@@ -875,14 +864,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(width: 56),
             Expanded(
-              child: _navItem(
+              child: bottomItem(
                 2,
                 'assets/icons/nav_khata.svg',
                 'Khata',
               ),
             ),
             Expanded(
-              child: _navItem(
+              child: bottomItem(
                 3,
                 'assets/icons/nav_orders.svg',
                 'Orders',
@@ -894,11 +883,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _navItem(int index, String asset, String label) {
-    final selected = _navIndex == index;
-    final color = selected ? AppColors.navy : AppColors.iconGrey;
+  Widget bottomItem(int index, String asset, String label) {
+    final selected = currentTab == index;
+    final color = selected ? MyColors.darkBlue : MyColors.lightGrey;
     return InkWell(
-      onTap: () => setState(() => _navIndex = index),
+      onTap: () => setState(() => currentTab = index),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -920,21 +909,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _circleIconButton({required Widget child}) {
+  Widget circleBtn({required Widget child}) {
     return Container(
       width: 40,
       height: 40,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
-        boxShadow: _softShadow(),
+        boxShadow: softShadow(),
       ),
       alignment: Alignment.center,
       child: child,
     );
   }
 
-  Widget _pillButton(String label, Color color) {
+  Widget filledBtn(String label, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
@@ -952,7 +941,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _statChip({
+  Widget infoBox({
     required Color color,
     required Color textColor,
     required Widget child,
@@ -979,19 +968,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _outlineChip({required Widget child}) {
+  Widget whiteChip({required Widget child}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: _softShadow(),
+        boxShadow: softShadow(),
       ),
       child: child,
     );
   }
 
-  Widget _avatarStack(
+  Widget profileStack(
     List<String> paths, {
     required Color borderColor,
     double size = 20,
@@ -1021,7 +1010,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<BoxShadow> _softShadow() {
+  List<BoxShadow> softShadow() {
     return [
       BoxShadow(
         color: Colors.black.withValues(alpha: 0.06),
@@ -1032,7 +1021,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _SparklinePainter extends CustomPainter {
+class GraphPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final path = Path()
@@ -1052,13 +1041,13 @@ class _SparklinePainter extends CustomPainter {
     canvas.drawPath(
       fillPath,
       Paint()
-        ..color = AppColors.brightGreen.withValues(alpha: 0.25)
+        ..color = MyColors.bannerGreen.withValues(alpha: 0.25)
         ..style = PaintingStyle.fill,
     );
     canvas.drawPath(
       path,
       Paint()
-        ..color = AppColors.brightGreen
+        ..color = MyColors.bannerGreen
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5
         ..strokeCap = StrokeCap.round
