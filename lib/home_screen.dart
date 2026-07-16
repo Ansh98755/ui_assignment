@@ -211,8 +211,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget bannerPager() {
     return SizedBox(
-      height: 200,
+      height: 230,
       child: PageView(
+        clipBehavior: Clip.none,
         onPageChanged: (index) => setState(() => currentPage = index),
         children: [
           ordersBanner(),
@@ -242,107 +243,161 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // card with faces hanging out the bottom
+  Widget floatCard({
+    required Color color,
+    required Widget child,
+    required List<String> pics,
+    required Color picBorder,
+    double picSize = 26,
+  }) {
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.bottomCenter,
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(12, 10, 12, 16),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: child,
+        ),
+        Positioned(
+          bottom: -(picSize * 0.55),
+          child: profileStack(pics, borderColor: picBorder, size: picSize),
+        ),
+      ],
+    );
+  }
+
   Widget ordersBanner() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Container(
-        decoration: BoxDecoration(
-          color: MyColors.bannerBlue,
-          borderRadius: BorderRadius.circular(22),
-        ),
+      padding: const EdgeInsets.fromLTRB(20, 10, 12, 10),
+      child: SizedBox(
+        height: 210,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Positioned(
-              left: 8,
-              top: 4,
-              child: SvgPicture.asset(
-                'assets/icons/orders_illustration.svg',
-                width: 132,
-                height: 132,
-              ),
-            ),
-            Positioned(
-              left: 16,
-              bottom: 14,
-              child: filledBtn('Orders', MyColors.accentOrange),
-            ),
-            Positioned(
-              right: 10,
-              top: 14,
-              child: infoBox(
-                color: MyColors.accentOrange,
-                textColor: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: const TextSpan(
-                        style: TextStyle(color: Colors.white, fontSize: 13),
-                        children: [
-                          TextSpan(text: 'You have '),
-                          TextSpan(
-                            text: '3',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                            ),
-                          ),
-                          TextSpan(text: ' active\norders from'),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    profileStack(
-                      [
-                        'assets/images/person1.jpg',
-                        'assets/images/person2.jpg',
-                        'assets/images/person3.jpg',
-                      ],
-                      borderColor: const Color(0xFFFF9A74),
-                      size: 24,
-                    ),
-                  ],
+            Positioned.fill(
+              right: 8,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: MyColors.bannerBlue,
+                  borderRadius: BorderRadius.circular(22),
                 ),
               ),
             ),
             Positioned(
-              right: 10,
-              bottom: 12,
-              child: infoBox(
+              left: 12,
+              top: 0,
+              bottom: 0,
+              width: 120,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: SvgPicture.asset(
+                      'assets/icons/orders_illustration.svg',
+                      width: 92,
+                      height: 92,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  filledBtn('Orders', MyColors.burntOrange),
+                ],
+              ),
+            ),
+            Positioned(
+              right: 8,
+              top: -6,
+              width: 148,
+              child: floatCard(
+                color: MyColors.burntOrange,
+                picBorder: const Color(0xFFE85A3C),
+                pics: const [
+                  'assets/images/person1.jpg',
+                  'assets/images/person2.jpg',
+                  'assets/images/person3.jpg',
+                ],
+                picSize: 28,
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      height: 1.25,
+                    ),
+                    children: [
+                      TextSpan(text: 'You have '),
+                      TextSpan(
+                        text: '3',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 15,
+                        ),
+                      ),
+                      TextSpan(text: ' active\norders from'),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 14,
+              bottom: 8,
+              width: 148,
+              child: floatCard(
                 color: Colors.white,
-                textColor: MyColors.darkBlue,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: const TextSpan(
+                picBorder: const Color(0xFFE85A3C),
+                pics: const [
+                  'assets/images/person4.jpg',
+                  'assets/images/person5.jpg',
+                ],
+                picSize: 28,
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    style: TextStyle(
+                      color: MyColors.greyText,
+                      fontSize: 12,
+                      height: 1.2,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '02',
                         style: TextStyle(
                           color: MyColors.darkBlue,
-                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 20,
                         ),
-                        children: [
-                          TextSpan(
-                            text: '02',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                            ),
-                          ),
-                          TextSpan(text: ' Pending\nOrders from'),
-                        ],
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    profileStack(
-                      [
-                        'assets/images/person4.jpg',
-                        'assets/images/person5.jpg',
-                      ],
-                      borderColor: MyColors.bannerBlue,
-                      size: 24,
-                    ),
-                  ],
+                      TextSpan(text: ' Pending\n'),
+                      TextSpan(
+                        text: 'Orders from',
+                        style: TextStyle(
+                          color: MyColors.darkBlue,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -985,22 +1040,29 @@ class _HomeScreenState extends State<HomeScreen> {
     required Color borderColor,
     double size = 20,
   }) {
+    const step = 0.72;
     return SizedBox(
       height: size,
-      width: size + (paths.length - 1) * (size * 0.65),
+      width: size + (paths.length - 1) * (size * step),
       child: Stack(
-        children: List.generate(paths.length, (index) {
+        clipBehavior: Clip.none,
+        children: List.generate(paths.length, (i) {
           return Positioned(
-            left: index * (size * 0.65),
+            left: i * (size * step),
             child: Container(
               width: size,
               height: size,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: borderColor, width: 1.5),
-                image: DecorationImage(
-                  image: AssetImage(paths[index]),
+                border: Border.all(color: borderColor, width: 1.8),
+                color: Colors.white,
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  paths[i],
                   fit: BoxFit.cover,
+                  width: size,
+                  height: size,
                 ),
               ),
             ),

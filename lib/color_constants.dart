@@ -10,6 +10,7 @@ class MyColors {
   static const deepBlue = Color(0xFF234DDC);
   static const pink = Color(0xFFCE316A);
   static const accentOrange = Color(0xFFFE804E);
+  static const burntOrange = Color(0xFFCC5E33);
   static const lightGrey = Color(0xFFAFB8CA);
   static const greyText = Color(0xFF5F7096);
   static const bg = Color(0xFFF5F6F8);
