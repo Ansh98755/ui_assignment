@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       backgroundColor: AppColors.background,
       floatingActionButton: SizedBox(
         width: 56,
@@ -221,10 +222,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildCarousel() {
     return SizedBox(
-      height: 160,
+      height: 200,
       child: PageView(
         onPageChanged: (index) => setState(() => _carouselIndex = index),
-        children: [_ordersCard(), _subscriptionsCard(), _customersCard()],
+        children: [
+          _ordersCard(),
+          _subscriptionsCard(),
+          _customersCard(),
+        ],
       ),
     );
   }
@@ -251,77 +256,109 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _ordersCard() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: _bannerShell(
-        color: AppColors.cyanBlue,
-        illustrationTop: 12,
-        illustration: SvgPicture.asset(
-          'assets/icons/orders_illustration.svg',
-          width: 112,
-          height: 112,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.cyanBlue,
+          borderRadius: BorderRadius.circular(22),
         ),
-        button: _pillButton('Orders', AppColors.orange),
-        rightColumn: [
-          _statChip(
-            color: AppColors.orange,
-            textColor: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: const TextSpan(
-                    style: TextStyle(color: Colors.white, fontSize: 11),
-                    children: [
-                      TextSpan(text: 'You have '),
-                      TextSpan(
-                        text: '3',
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              left: 8,
+              top: 4,
+              child: SvgPicture.asset(
+                'assets/icons/orders_illustration.svg',
+                width: 132,
+                height: 132,
+              ),
+            ),
+            Positioned(
+              left: 16,
+              bottom: 14,
+              child: _pillButton('Orders', AppColors.orange),
+            ),
+            Positioned(
+              right: 10,
+              top: 14,
+              child: _statChip(
+                color: AppColors.orange,
+                textColor: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: const TextSpan(
+                        style: TextStyle(color: Colors.white, fontSize: 13),
+                        children: [
+                          TextSpan(text: 'You have '),
+                          TextSpan(
+                            text: '3',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
+                            ),
+                          ),
+                          TextSpan(text: ' active\norders from'),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _avatarStack(
+                      [
+                        'assets/images/person1.jpg',
+                        'assets/images/person2.jpg',
+                        'assets/images/person3.jpg',
+                      ],
+                      borderColor: const Color(0xFFFF9A74),
+                      size: 24,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              right: 10,
+              bottom: 12,
+              child: _statChip(
+                color: Colors.white,
+                textColor: AppColors.navy,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: const TextSpan(
                         style: TextStyle(
-                          fontWeight: FontWeight.w700,
+                          color: AppColors.navy,
                           fontSize: 13,
                         ),
+                        children: [
+                          TextSpan(
+                            text: '02',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
+                          ),
+                          TextSpan(text: ' Pending\nOrders from'),
+                        ],
                       ),
-                      TextSpan(text: ' active\norders from'),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 8),
+                    _avatarStack(
+                      [
+                        'assets/images/person4.jpg',
+                        'assets/images/person5.jpg',
+                      ],
+                      borderColor: AppColors.cyanBlue,
+                      size: 24,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 6),
-                _avatarStack([
-                  'assets/images/person1.jpg',
-                  'assets/images/person2.jpg',
-                  'assets/images/person3.jpg',
-                ], borderColor: const Color(0xFFFF9A74)),
-              ],
+              ),
             ),
-          ),
-          _statChip(
-            color: Colors.white,
-            textColor: AppColors.navy,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: const TextSpan(
-                    style: TextStyle(color: AppColors.navy, fontSize: 11),
-                    children: [
-                      TextSpan(
-                        text: '02',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                        ),
-                      ),
-                      TextSpan(text: ' Pending\nOrders from'),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 6),
-                _avatarStack([
-                  'assets/images/person4.jpg',
-                  'assets/images/person5.jpg',
-                ], borderColor: AppColors.cyanBlue),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -329,96 +366,123 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _subscriptionsCard() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: _bannerShell(
-        color: AppColors.gold,
-        illustrationTop: 8,
-        illustration: SvgPicture.asset(
-          'assets/icons/subscriptions_illustration.svg',
-          width: 116,
-          height: 102,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.gold,
+          borderRadius: BorderRadius.circular(22),
         ),
-        button: _pillButton('Subscriptions', AppColors.royalBlue),
-        rightColumn: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              _statChip(
-                color: AppColors.royalBlue,
-                textColor: Colors.white,
-                child: RichText(
-                  text: const TextSpan(
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+        child: Stack(
+          children: [
+            Positioned(
+              left: 10,
+              top: 8,
+              child: SvgPicture.asset(
+                'assets/icons/subscriptions_illustration.svg',
+                width: 115,
+                height: 100,
+              ),
+            ),
+            Positioned(
+              left: 18,
+              bottom: 16,
+              child: _pillButton('Subscriptions', AppColors.royalBlue),
+            ),
+            Positioned(
+              right: 14,
+              top: 12,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      TextSpan(
-                        text: '03',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
+                      _statChip(
+                        color: AppColors.royalBlue,
+                        textColor: Colors.white,
+                        child: RichText(
+                          text: const TextSpan(
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            children: [
+                              TextSpan(
+                                text: '03',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              TextSpan(text: ' deliveries'),
+                            ],
+                          ),
                         ),
                       ),
-                      TextSpan(text: ' deliveries'),
+                      Positioned(
+                        left: 10,
+                        bottom: -10,
+                        child: _avatarStack(
+                          [
+                            'assets/images/person1.jpg',
+                            'assets/images/person2.jpg',
+                            'assets/images/person3.jpg',
+                          ],
+                          borderColor: const Color(0xFF8AA0F5),
+                          size: 18,
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ),
-              Positioned(
-                left: 12,
-                bottom: -10,
-                child: _avatarStack(
-                  [
-                    'assets/images/person1.jpg',
-                    'assets/images/person2.jpg',
-                    'assets/images/person3.jpg',
-                  ],
-                  borderColor: const Color(0xFF8AA0F5),
-                  size: 18,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          _statChip(
-            color: Colors.white,
-            textColor: AppColors.navy,
-            child: RichText(
-              text: const TextSpan(
-                style: TextStyle(color: AppColors.iconGrey, fontSize: 11),
-                children: [
-                  TextSpan(
-                    text: '10',
-                    style: TextStyle(
-                      color: AppColors.navy,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
+                  const SizedBox(height: 16),
+                  _statChip(
+                    color: Colors.white,
+                    textColor: AppColors.navy,
+                    child: RichText(
+                      text: const TextSpan(
+                        style: TextStyle(
+                          color: AppColors.iconGrey,
+                          fontSize: 11,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '10',
+                            style: TextStyle(
+                              color: AppColors.navy,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                            ),
+                          ),
+                          TextSpan(text: ' Active\nSubscriptions'),
+                        ],
+                      ),
                     ),
                   ),
-                  TextSpan(text: ' Active\nSubscriptions'),
+                  const SizedBox(height: 8),
+                  _statChip(
+                    color: Colors.white,
+                    textColor: AppColors.navy,
+                    child: RichText(
+                      text: const TextSpan(
+                        style: TextStyle(
+                          color: AppColors.iconGrey,
+                          fontSize: 11,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '119',
+                            style: TextStyle(
+                              color: AppColors.navy,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                            ),
+                          ),
+                          TextSpan(text: ' Pending\nDeliveries'),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 8),
-          _statChip(
-            color: Colors.white,
-            textColor: AppColors.navy,
-            child: RichText(
-              text: const TextSpan(
-                style: TextStyle(color: AppColors.iconGrey, fontSize: 11),
-                children: [
-                  TextSpan(
-                    text: '119',
-                    style: TextStyle(
-                      color: AppColors.navy,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                    ),
-                  ),
-                  TextSpan(text: ' Pending\nDeliveries'),
-                ],
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -426,172 +490,167 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _customersCard() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: _bannerShell(
-        color: AppColors.brightGreen,
-        illustrationTop: 8,
-        illustration: SvgPicture.asset(
-          'assets/icons/customers_illustration.svg',
-          width: 112,
-          height: 112,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.brightGreen,
+          borderRadius: BorderRadius.circular(22),
         ),
-        button: _pillButton('View Customers', AppColors.magenta),
-        rightColumn: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              _statChip(
-                color: AppColors.magenta,
-                textColor: Colors.white,
-                child: RichText(
-                  text: const TextSpan(
-                    style: TextStyle(color: Colors.white, fontSize: 11),
+        child: Stack(
+          children: [
+            Positioned(
+              left: 12,
+              top: 6,
+              child: SvgPicture.asset(
+                'assets/icons/customers_illustration.svg',
+                width: 110,
+                height: 110,
+              ),
+            ),
+            Positioned(
+              left: 14,
+              bottom: 16,
+              child: _pillButton('View Customers', AppColors.magenta),
+            ),
+            Positioned(
+              right: 14,
+              top: 12,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      TextSpan(
-                        text: '15',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
+                      _statChip(
+                        color: AppColors.magenta,
+                        textColor: Colors.white,
+                        child: RichText(
+                          text: const TextSpan(
+                            style: TextStyle(color: Colors.white, fontSize: 11),
+                            children: [
+                              TextSpan(
+                                text: '15',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              TextSpan(text: ' New customers'),
+                            ],
+                          ),
                         ),
                       ),
-                      TextSpan(text: ' New customers'),
+                      Positioned(
+                        left: 8,
+                        bottom: -12,
+                        child: Row(
+                          children: [
+                            _avatarStack(
+                              [
+                                'assets/images/person3.jpg',
+                                'assets/images/person1.jpg',
+                                'assets/images/person2.jpg',
+                              ],
+                              borderColor: AppColors.brightGreen,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 4),
+                            Container(
+                              width: 18,
+                              height: 18,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.add,
+                                size: 12,
+                                color: AppColors.iconGrey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ),
-              Positioned(
-                left: 10,
-                bottom: -12,
-                child: Row(
-                  children: [
-                    _avatarStack(
-                      [
-                        'assets/images/person3.jpg',
-                        'assets/images/person1.jpg',
-                        'assets/images/person2.jpg',
+                  const SizedBox(height: 18),
+                  _statChip(
+                    color: Colors.white,
+                    textColor: AppColors.navy,
+                    width: 120,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          children: [
+                            Text(
+                              '1.8%',
+                              style: TextStyle(
+                                color: AppColors.navy,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            SizedBox(width: 4),
+                            Icon(
+                              Icons.arrow_upward,
+                              size: 14,
+                              color: AppColors.brightGreen,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        SizedBox(
+                          height: 22,
+                          width: 90,
+                          child: CustomPaint(painter: _SparklinePainter()),
+                        ),
                       ],
-                      borderColor: AppColors.brightGreen,
-                      size: 18,
                     ),
-                    const SizedBox(width: 4),
-                    Container(
-                      width: 18,
-                      height: 18,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        size: 12,
-                        color: AppColors.iconGrey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 18),
-          _statChip(
-            color: Colors.white,
-            textColor: AppColors.navy,
-            width: 124,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Row(
-                  children: [
-                    Text(
-                      '1.8%',
-                      style: TextStyle(
-                        color: AppColors.navy,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(width: 4),
-                    Icon(
-                      Icons.arrow_upward,
-                      size: 14,
-                      color: AppColors.brightGreen,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                SizedBox(
-                  height: 22,
-                  width: 92,
-                  child: CustomPaint(painter: _SparklinePainter()),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          _statChip(
-            color: Colors.white,
-            textColor: AppColors.navy,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RichText(
-                  text: const TextSpan(
-                    style: TextStyle(color: AppColors.iconGrey, fontSize: 11),
-                    children: [
-                      TextSpan(
-                        text: '10',
-                        style: TextStyle(
-                          color: AppColors.navy,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                        ),
-                      ),
-                      TextSpan(text: ' Active\nCustomers'),
-                    ],
                   ),
-                ),
-                const SizedBox(width: 8),
-                _avatarStack(
-                  [
-                    'assets/images/person4.jpg',
-                    'assets/images/person5.jpg',
-                    'assets/images/person1.jpg',
-                  ],
-                  borderColor: AppColors.brightGreen,
-                  size: 16,
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  _statChip(
+                    color: Colors.white,
+                    textColor: AppColors.navy,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RichText(
+                          text: const TextSpan(
+                            style: TextStyle(
+                              color: AppColors.iconGrey,
+                              fontSize: 11,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: '10',
+                                style: TextStyle(
+                                  color: AppColors.navy,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              TextSpan(text: ' Active\nCustomers'),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        _avatarStack(
+                          [
+                            'assets/images/person4.jpg',
+                            'assets/images/person5.jpg',
+                            'assets/images/person1.jpg',
+                          ],
+                          borderColor: AppColors.brightGreen,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _bannerShell({
-    required Color color,
-    required Widget illustration,
-    required Widget button,
-    required List<Widget> rightColumn,
-    double illustrationTop = 10,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Stack(
-        children: [
-          Positioned(left: 16, top: illustrationTop, child: illustration),
-          Positioned(left: 18, bottom: 16, child: button),
-          Positioned(
-            top: 14,
-            right: 14,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: rightColumn,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -608,7 +667,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   'January, 23 2021',
-                  style: TextStyle(color: AppColors.subtitle, fontSize: 12),
+                  style: TextStyle(
+                    color: AppColors.subtitle,
+                    fontSize: 12,
+                  ),
                 ),
                 SizedBox(height: 2),
                 Text(
@@ -742,7 +804,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 4),
                   const Text(
                     'New Order created with Order',
-                    style: TextStyle(color: AppColors.subtitle, fontSize: 12),
+                    style: TextStyle(
+                      color: AppColors.subtitle,
+                      fontSize: 12,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   const Text(
@@ -792,14 +857,34 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 60,
         child: Row(
           children: [
-            Expanded(child: _navItem(0, 'assets/icons/nav_home.svg', 'Home')),
             Expanded(
-              child: _navItem(1, 'assets/icons/nav_customers.svg', 'Customers'),
+              child: _navItem(
+                0,
+                'assets/icons/nav_home.svg',
+                'Home',
+              ),
+            ),
+            Expanded(
+              child: _navItem(
+                1,
+                'assets/icons/nav_customers.svg',
+                'Customers',
+              ),
             ),
             const SizedBox(width: 56),
-            Expanded(child: _navItem(2, 'assets/icons/nav_khata.svg', 'Khata')),
             Expanded(
-              child: _navItem(3, 'assets/icons/nav_orders.svg', 'Orders'),
+              child: _navItem(
+                2,
+                'assets/icons/nav_khata.svg',
+                'Khata',
+              ),
+            ),
+            Expanded(
+              child: _navItem(
+                3,
+                'assets/icons/nav_orders.svg',
+                'Orders',
+              ),
             ),
           ],
         ),
@@ -873,10 +958,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }) {
     return Container(
       width: width,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.08),
@@ -911,11 +996,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }) {
     return SizedBox(
       height: size,
-      width: size + (paths.length - 1) * (size * 0.6),
+      width: size + (paths.length - 1) * (size * 0.65),
       child: Stack(
         children: List.generate(paths.length, (index) {
           return Positioned(
-            left: index * (size * 0.6),
+            left: index * (size * 0.65),
             child: Container(
               width: size,
               height: size,
