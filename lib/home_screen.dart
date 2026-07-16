@@ -372,24 +372,25 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(22),
         ),
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             Positioned(
-              left: 10,
-              top: 8,
+              left: 6,
+              top: 2,
               child: SvgPicture.asset(
                 'assets/icons/subscriptions_illustration.svg',
-                width: 115,
-                height: 100,
+                width: 138,
+                height: 120,
               ),
             ),
             Positioned(
-              left: 18,
-              bottom: 16,
+              left: 16,
+              bottom: 14,
               child: _pillButton('Subscriptions', AppColors.royalBlue),
             ),
             Positioned(
-              right: 14,
-              top: 12,
+              right: 10,
+              top: 10,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -401,13 +402,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         textColor: Colors.white,
                         child: RichText(
                           text: const TextSpan(
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                             children: [
                               TextSpan(
                                 text: '03',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 16,
+                                  fontSize: 18,
                                 ),
                               ),
                               TextSpan(text: ' deliveries'),
@@ -417,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Positioned(
                         left: 10,
-                        bottom: -10,
+                        bottom: -12,
                         child: _avatarStack(
                           [
                             'assets/images/person1.jpg',
@@ -425,12 +426,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             'assets/images/person3.jpg',
                           ],
                           borderColor: const Color(0xFF8AA0F5),
-                          size: 18,
+                          size: 22,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   _statChip(
                     color: Colors.white,
                     textColor: AppColors.navy,
@@ -438,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       text: const TextSpan(
                         style: TextStyle(
                           color: AppColors.iconGrey,
-                          fontSize: 11,
+                          fontSize: 13,
                         ),
                         children: [
                           TextSpan(
@@ -446,7 +447,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(
                               color: AppColors.navy,
                               fontWeight: FontWeight.w700,
-                              fontSize: 14,
+                              fontSize: 16,
                             ),
                           ),
                           TextSpan(text: ' Active\nSubscriptions'),
@@ -462,7 +463,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       text: const TextSpan(
                         style: TextStyle(
                           color: AppColors.iconGrey,
-                          fontSize: 11,
+                          fontSize: 13,
                         ),
                         children: [
                           TextSpan(
@@ -470,7 +471,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(
                               color: AppColors.navy,
                               fontWeight: FontWeight.w700,
-                              fontSize: 14,
+                              fontSize: 16,
                             ),
                           ),
                           TextSpan(text: ' Pending\nDeliveries'),
@@ -496,24 +497,25 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(22),
         ),
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             Positioned(
-              left: 12,
-              top: 6,
+              left: 8,
+              top: 2,
               child: SvgPicture.asset(
                 'assets/icons/customers_illustration.svg',
-                width: 110,
-                height: 110,
+                width: 132,
+                height: 132,
               ),
             ),
             Positioned(
               left: 14,
-              bottom: 16,
+              bottom: 14,
               child: _pillButton('View Customers', AppColors.magenta),
             ),
             Positioned(
-              right: 14,
-              top: 12,
+              right: 10,
+              top: 10,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -525,13 +527,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         textColor: Colors.white,
                         child: RichText(
                           text: const TextSpan(
-                            style: TextStyle(color: Colors.white, fontSize: 11),
+                            style: TextStyle(color: Colors.white, fontSize: 13),
                             children: [
                               TextSpan(
                                 text: '15',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 14,
+                                  fontSize: 16,
                                 ),
                               ),
                               TextSpan(text: ' New customers'),
@@ -541,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Positioned(
                         left: 8,
-                        bottom: -12,
+                        bottom: -14,
                         child: Row(
                           children: [
                             _avatarStack(
@@ -551,19 +553,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 'assets/images/person2.jpg',
                               ],
                               borderColor: AppColors.brightGreen,
-                              size: 18,
+                              size: 22,
                             ),
                             const SizedBox(width: 4),
                             Container(
-                              width: 18,
-                              height: 18,
+                              width: 22,
+                              height: 22,
                               decoration: const BoxDecoration(
                                 color: Colors.white,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
                                 Icons.add,
-                                size: 12,
+                                size: 14,
                                 color: AppColors.iconGrey,
                               ),
                             ),
@@ -572,11 +574,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 20),
                   _statChip(
                     color: Colors.white,
                     textColor: AppColors.navy,
-                    width: 120,
+                    width: 136,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -586,22 +588,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               '1.8%',
                               style: TextStyle(
                                 color: AppColors.navy,
-                                fontSize: 16,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             SizedBox(width: 4),
                             Icon(
                               Icons.arrow_upward,
-                              size: 14,
+                              size: 16,
                               color: AppColors.brightGreen,
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 6),
                         SizedBox(
-                          height: 22,
-                          width: 90,
+                          height: 26,
+                          width: 100,
                           child: CustomPaint(painter: _SparklinePainter()),
                         ),
                       ],
@@ -618,7 +620,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: const TextSpan(
                             style: TextStyle(
                               color: AppColors.iconGrey,
-                              fontSize: 11,
+                              fontSize: 13,
                             ),
                             children: [
                               TextSpan(
@@ -626,7 +628,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: TextStyle(
                                   color: AppColors.navy,
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 14,
+                                  fontSize: 16,
                                 ),
                               ),
                               TextSpan(text: ' Active\nCustomers'),
@@ -641,7 +643,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             'assets/images/person1.jpg',
                           ],
                           borderColor: AppColors.brightGreen,
-                          size: 16,
+                          size: 20,
                         ),
                       ],
                     ),
@@ -934,7 +936,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _pillButton(String label, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(8),
@@ -943,7 +945,7 @@ class _HomeScreenState extends State<HomeScreen> {
         label,
         style: const TextStyle(
           color: Colors.white,
-          fontSize: 12,
+          fontSize: 13,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -958,10 +960,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }) {
     return Container(
       width: width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.08),
